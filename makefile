@@ -1,24 +1,30 @@
 CC = gcc
 LN = gcc
-CFLAGS = -Wall -pedantic -c
-RM = del
+CFLAGS = -Wall -pedantic -I.
+TARGET_FLAGS =
 
-OBJ_DIR = output-object
-MODULE = main screen item board
+ifeq ($(TARGET), LINUX)
+	RM = rm -rf
+	TARGET_FLAGS = -D D_LINUX
+else
+	RM = del
+endif
 
+modules := screen/screen.mk main/main.mk board/board.mk object/object.mk
 sources :=
 objects :=
 
-include screen\screen.mk
-include main\main.mk
-include board\board.mk
-include object\object.mk
+include $(modules)
 
 all : $(objects)
-	$(CC) $(objects) -o tetris.exe
+	$(CC) $(CFLAGS) $(objects) -o tetris
 
 clean:
+ifeq ($(TARGET), LINUX)
 	$(RM) $(objects)
+else
+	$(RM) $(subst /,\,$(objects))
+endif
 
 %.o : %.c
-	$(CC) $(CFLAGS) -I.  -c $< -o $@
+	$(CC) $(CFLAGS) $(TARGET_FLAGS) -c $< -o $@

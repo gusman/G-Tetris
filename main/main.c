@@ -1,8 +1,8 @@
 #include <stdio.h>
 
-#include "screen\screen.h"
-#include "board\board.h"
-#include "object\object.h"
+#include "screen/screen.h"
+#include "board/board.h"
+#include "object/object.h"
 
 int main()
 {

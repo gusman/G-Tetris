@@ -54,20 +54,6 @@ void tobj_genplot(struct object_st *p_obj)
         }
 }
 
-int tobj_detectcollision(struct object_st *p_obj, unsigned int coll)
-{
-        switch(coll)
-        {
-                case TOP_COLLISION:
-
-                        break;
-
-                case BOTTOM_COLLISION:
-
-                        break;
-
-        }
-}
 
 void tobj_genplot0(struct object_st *p_obj)
 {

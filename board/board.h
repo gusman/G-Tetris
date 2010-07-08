@@ -1,7 +1,7 @@
 #ifndef __BOARD_H__
 #define __BOARD_H__
 
-#include "object\object.h"
+#include "object/object.h"
 
 struct board_st {
 	unsigned int width;
