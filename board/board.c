@@ -7,7 +7,7 @@
 #include "object/object.h"
 
 
-struct board_st st_board;
+static struct board_st st_board;
 
 void get_board(struct board_st** p_board)
 {

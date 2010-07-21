@@ -19,7 +19,6 @@ struct board_st {
         unsigned int *p_plot;
 };
 
-extern struct board_st st_board;
 
 void get_board(struct board_st** p_board);
 void board_init(struct board_st* p_board, unsigned int width, unsigned int height);

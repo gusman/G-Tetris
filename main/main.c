@@ -13,7 +13,6 @@ int main()
         get_object(&p_obj);
 
 	board_init(p_board, 25, 25);
-	object_init(p_obj, OBJECT_T, DEGREE_90);
-      	
+      	screen_process(p_board, p_obj);
 	return 0;
 }

@@ -1,9 +1,6 @@
 #ifndef __SCREEN_H__
 #define __SCREEN_H__
 
-void gotoxy(int x, int y);
-void clrscr(void);
-void sleep(unsigned int mseconds);
-
+void screen_process(struct board_st* p_board, struct object_st* p_obj);
 
 #endif /*__SCREEN_H__*/

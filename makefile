@@ -1,11 +1,13 @@
 CC = gcc
 LN = gcc
 CFLAGS = -Wall -pedantic -I.
+TARGET = $(t)
 CURSES_FLAGS :=
-TARGET_FLAGS :=
+TARGET_FLAGS := 
 
 
-ifeq ($(TARGET), LINUX)
+
+ifeq ($(TARGET), linux)
 	RM = rm -rf
 	TARGET_FLAGS = -D D_LINUX
 	CURSES_FLAGS = -lncurses

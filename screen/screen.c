@@ -12,7 +12,8 @@ void sleep(unsigned int mseconds)
         while (goal > clock());
 }
 
-static void board_drawborder(struct board_st* p_board)
+#if 0 /*It seems we don't need this anymore */
+static void screen_drawborder(struct board_st* p_board)
 {
 	int i;
 	int j;
@@ -36,19 +37,23 @@ static void board_drawborder(struct board_st* p_board)
                 p_board->p_plot[i + ((j - 1) * p_board->width)] = BORDER_VAL;
 	}
 }
-
-void board_drawobject(struct object_st* p_obj, unsigned int mode)
+#endif 
+void screen_drawobject(struct object_st* p_obj, unsigned int mode)
 {
         int i;
+        int cur_x, cur_y;
         unsigned int line;
 
         p_obj->pf_genplot(p_obj);
+
         line = (p_obj->pos_y == 0) ? 0 : (p_obj->pos_y - 1);
         for (i = 0; i < (p_obj->width * p_obj->height); i++) {
                 if (0 == (i % p_obj->width)) 
                         line++;
 
-           /*     gotoyx((i % p_obj->width) + p_obj->pos_x, line); */
+                cur_x = (i % p_obj->width) + p_obj->pos_x;
+                cur_y = line;
+                move(cur_y, cur_x);
 
                 if (DRAW_FILL == mode) {
                         if (p_obj->p_plot[i] == 1) {
@@ -58,11 +63,11 @@ void board_drawobject(struct object_st* p_obj, unsigned int mode)
                 else {
                         printw("%c", 32);
                 }
-
+                refresh();
         }
 }
 
-void board_drawplot(struct board_st* p_board)
+void screen_drawplot(struct board_st* p_board)
 {
         int i, j;
 	for (i = 0; i < p_board->height; i++) {
@@ -84,10 +89,16 @@ void board_drawplot(struct board_st* p_board)
 }
 
 
-void board_process(struct board_st* p_board, struct object_st* p_obj)
+void screen_process(struct board_st* p_board, struct object_st* p_obj)
 {
         unsigned int pos_x;
         unsigned int pos_y;
+
+
+        object_init(p_obj, OBJECT_T, DEGREE_0);
+
+        initscr();
+        noecho();
 
         pos_x = p_board->width / 2;
         pos_y = 0;
@@ -104,19 +115,22 @@ void board_process(struct board_st* p_board, struct object_st* p_obj)
                 gotoyx(45,1); printw("h: %4d", p_obj->height);
                 gotoyx(45,2); printw("x: %4d", p_obj->pos_x);
                 gotoyx(45,3); printw("y: %4d", p_obj->pos_y);
-*/
-                board_drawobject(p_obj, DRAW_FILL);
+                */
+                screen_drawobject(p_obj, DRAW_FILL);
+                //getch();
                 sleep(25);
-
+/*
                 if (board_collisiondetect(BOTTOM_COLLISION, p_board, p_obj)) {
                         board_plotobject(p_board, p_obj);
-                        board_drawplot(p_board);
+                        screen_drawplot(p_board);
                         pos_y = 0;
                         continue;
                 }
 
-                board_drawobject(p_obj, DRAW_CLEAR);
-
+                screen_drawobject(p_obj, DRAW_CLEAR);
+                */
                 pos_y++;
+                if (20 < pos_y) pos_y = 0;
         }      
+        endwin();
 }
