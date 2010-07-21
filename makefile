@@ -1,13 +1,17 @@
 CC = gcc
 LN = gcc
 CFLAGS = -Wall -pedantic -I.
-TARGET_FLAGS =
+CURSES_FLAGS :=
+TARGET_FLAGS :=
+
 
 ifeq ($(TARGET), LINUX)
 	RM = rm -rf
 	TARGET_FLAGS = -D D_LINUX
+	CURSES_FLAGS = -lncurses
 else
-	RM = del
+	RM = rm -rf
+	CURSES_FLAGS = -lpdcurses
 endif
 
 modules := screen/screen.mk main/main.mk board/board.mk object/object.mk
@@ -17,14 +21,10 @@ objects :=
 include $(modules)
 
 all : $(objects)
-	$(CC) $(CFLAGS) $(objects) -o tetris
+	$(CC) $(objects) -o tetris $(CURSES_FLAGS) $(CFLAGS)
 
 clean:
-ifeq ($(TARGET), LINUX)
 	$(RM) $(objects)
-else
-	$(RM) $(subst /,\,$(objects))
-endif
 
 %.o : %.c
-	$(CC) $(CFLAGS) $(TARGET_FLAGS) -c $< -o $@
+	$(CC) -c $< -o $@ $(CFLAGS)  $(TARGET_FLAGS) $(CURSES_FLAGS)

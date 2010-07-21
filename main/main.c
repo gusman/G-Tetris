@@ -14,9 +14,6 @@ int main()
 
 	board_init(p_board, 25, 25);
 	object_init(p_obj, OBJECT_T, DEGREE_90);
-
-        board_process(p_board, p_obj);
       	
-        gotoxy(0,45);        
 	return 0;
 }
