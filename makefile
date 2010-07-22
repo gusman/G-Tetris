@@ -26,7 +26,7 @@ all : $(objects)
 	$(CC) $(objects) -o tetris $(CURSES_FLAGS) $(CFLAGS)
 
 clean:
-	$(RM) $(objects)
+	$(RM) $(objects) tetris*
 
 %.o : %.c
 	$(CC) -c $< -o $@ $(CFLAGS)  $(TARGET_FLAGS) $(CURSES_FLAGS)
