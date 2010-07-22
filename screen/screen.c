@@ -38,7 +38,7 @@ static void screen_drawborder(struct board_st* p_board)
 	}
 }
 #endif 
-void screen_drawobject(struct object_st* p_obj, unsigned int mode)
+void screen_drawobject(WINDOW *p_window, struct object_st* p_obj, unsigned int mode)
 {
         int i;
         int cur_x, cur_y;
@@ -53,21 +53,21 @@ void screen_drawobject(struct object_st* p_obj, unsigned int mode)
 
                 cur_x = (i % p_obj->width) + p_obj->pos_x;
                 cur_y = line;
-                move(cur_y, cur_x);
+                wmove(p_window, cur_y, cur_x);
 
                 if (DRAW_FILL == mode) {
                         if (p_obj->p_plot[i] == 1) {
-                                printw("%c", 219);
+                                wprintw(p_window, "%c", 219);
                         }
                 }
                 else {
-                        printw("%c", 32);
+                        wprintw(p_window, "%c", 32);
                 }
-                refresh();
+                wrefresh(p_window);
         }
 }
 
-void screen_drawplot(struct board_st* p_board)
+void screen_drawplot(WINDOW *p_window, struct board_st* p_board)
 {
         int i, j;
 	for (i = 0; i < p_board->height; i++) {
@@ -88,37 +88,97 @@ void screen_drawplot(struct board_st* p_board)
         }
 }
 
+void screen_info(WINDOW *p_window, struct board_st* p_board, struct object_st* p_obj)
+{
+        int x;
+        int y;
+
+        x = 1;
+        y = 1;
+
+        mvwprintw(p_window, y++, x, "Board W: %3d", p_board->width);
+        mvwprintw(p_window, y++, x, "Board H: %3d", p_board->height);
+        mvwprintw(p_window, y++, x, "Obj   X: %3d", p_obj->pos_x);
+        mvwprintw(p_window, y++, x, "Obj   Y: %3d", p_obj->pos_y);
+        wrefresh(p_window);
+}
+
+#define LOG(y, x, s)  \
+        mvwprintw(p_wininfo, y, x, s); \
+        wrefresh(p_wininfo); 
+
 
 void screen_process(struct board_st* p_board, struct object_st* p_obj)
 {
-        unsigned int pos_x;
-        unsigned int pos_y;
+        WINDOW *p_winboard;
+        WINDOW *p_wininfo;
 
+        int pos_x;
+        int pos_y;
 
+        /* Init and create object */
         object_init(p_obj, OBJECT_T, DEGREE_0);
-
-        initscr();
-        noecho();
-
         pos_x = p_board->width / 2;
         pos_y = 0;
 
+        /* Init screen */
+        initscr();
+        cbreak();
+        noecho();
+        refresh();
+
+        /* Create Board Window */
+        p_winboard = newwin(p_board->height, p_board->width, 0, 0);
+        box(p_winboard, 0, 0);
+        wrefresh(p_winboard);
+        nodelay(p_winboard, TRUE);
+        keypad(p_winboard, TRUE);
+
+        /* Create Board Info */
+        p_wininfo = newwin(p_board->height >> 1, 35, 0, p_board->width + 2);
+        box(p_wininfo, 0, 0);
+        wrefresh(p_wininfo);
+
         while(1) {
+                int ch;
 
+                if (0 == pos_y)
+                        p_obj->pos_x = pos_x;
 
-                p_obj->pos_x = pos_x;
                 p_obj->pos_y = pos_y;
-                p_obj->rotation = DEGREE_270;
 
-                /*
-                gotoyx(45,0); printw("w: %4d", p_obj->width);
-                gotoyx(45,1); printw("h: %4d", p_obj->height);
-                gotoyx(45,2); printw("x: %4d", p_obj->pos_x);
-                gotoyx(45,3); printw("y: %4d", p_obj->pos_y);
-                */
-                screen_drawobject(p_obj, DRAW_FILL);
-                //getch();
-                sleep(25);
+                screen_drawobject(p_winboard, p_obj, DRAW_FILL);
+                screen_info(p_wininfo, p_board, p_obj);
+
+                ch = wgetch(p_winboard);
+                if ('Q' == ch || 'q' == ch)
+                        break;
+
+                napms(250);
+                screen_drawobject(p_winboard, p_obj, DRAW_CLEAR);
+                switch(ch) {
+                        case KEY_UP:
+                                LOG( 7, 1, "KEY_UP   ");
+                                p_obj->rotation = (p_obj->rotation + 1) % 4;
+                                break;
+
+                        case KEY_DOWN:
+                                LOG( 7, 1, "KEY_DOWN ");
+                                p_obj->rotation = (p_obj->rotation - 1) % 4;
+                                break;
+
+                        case KEY_LEFT:
+                                LOG( 7, 1, "KEY_LEFT ");
+                                p_obj->pos_x = ((p_obj->pos_x - 1) > 0) ? p_obj->pos_x - 1 : 0;
+                                break;
+
+                        case KEY_RIGHT:
+                                LOG( 7, 1, "KEY_RIGHT");
+                                p_obj->pos_x = ((p_obj->pos_x + 1) < p_board->width) ? p_obj->pos_x + 1 : p_board->width;
+                                break;
+                }
+
+               
 /*
                 if (board_collisiondetect(BOTTOM_COLLISION, p_board, p_obj)) {
                         board_plotobject(p_board, p_obj);
@@ -130,7 +190,7 @@ void screen_process(struct board_st* p_board, struct object_st* p_obj)
                 screen_drawobject(p_obj, DRAW_CLEAR);
                 */
                 pos_y++;
-                if (20 < pos_y) pos_y = 0;
+                if ((p_board->height - 4) < pos_y) pos_y = 0;
         }      
         endwin();
 }

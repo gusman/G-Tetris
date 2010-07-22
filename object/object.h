@@ -16,8 +16,8 @@ struct object_st {
 	unsigned int rotation;
 	unsigned int width;
 	unsigned int height;
-	unsigned int pos_x;
-        unsigned int pos_y;
+	int pos_x;
+        int pos_y;
 	unsigned int *p_plot;
         void (*pf_genplot)      (struct object_st* p_obj);
 };
