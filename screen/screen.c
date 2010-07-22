@@ -44,6 +44,8 @@ void screen_drawobject(WINDOW *p_window, struct object_st* p_obj, unsigned int m
         int cur_x, cur_y;
         unsigned int line;
 
+
+
         p_obj->pf_genplot(p_obj);
 
         line = (p_obj->pos_y == 0) ? 0 : (p_obj->pos_y - 1);
@@ -57,14 +59,17 @@ void screen_drawobject(WINDOW *p_window, struct object_st* p_obj, unsigned int m
 
                 if (DRAW_FILL == mode) {
                         if (p_obj->p_plot[i] == 1) {
-                                wprintw(p_window, "%c", 219);
+                                wattron(p_window, COLOR_PAIR(1));
+                                wprintw(p_window, " ");
+                                wattroff(p_window, COLOR_PAIR(1));
                         }
                 }
                 else {
-                        wprintw(p_window, "%c", 32);
+                        wprintw(p_window, " ");
                 }
                 wrefresh(p_window);
         }
+
 }
 
 void screen_drawplot(WINDOW *p_window, struct board_st* p_board)
@@ -121,7 +126,7 @@ void screen_process(struct board_st* p_board, struct object_st* p_obj)
         pos_x = p_board->width / 2;
         pos_y = 0;
 
-        /* Init screen */
+                /* Init screen */
         initscr();
         cbreak();
         noecho();
@@ -129,16 +134,24 @@ void screen_process(struct board_st* p_board, struct object_st* p_obj)
 
         /* Create Board Window */
         p_winboard = newwin(p_board->height, p_board->width, 0, 0);
-        box(p_winboard, 0, 0);
-        wrefresh(p_winboard);
         nodelay(p_winboard, TRUE);
         keypad(p_winboard, TRUE);
+        box(p_winboard, 0, 0);
+        wrefresh(p_winboard);
 
         /* Create Board Info */
         p_wininfo = newwin(p_board->height >> 1, 35, 0, p_board->width + 2);
         box(p_wininfo, 0, 0);
         wrefresh(p_wininfo);
 
+        /* Color */
+        start_color();
+        init_pair(1, COLOR_WHITE, COLOR_BLACK);
+        init_pair(2, COLOR_BLACK, COLOR_WHITE);
+
+        wbkgd(p_winboard, COLOR_PAIR(2));
+        wbkgd(p_wininfo, COLOR_PAIR(2));
+ 
         while(1) {
                 int ch;
 
@@ -158,22 +171,22 @@ void screen_process(struct board_st* p_board, struct object_st* p_obj)
                 screen_drawobject(p_winboard, p_obj, DRAW_CLEAR);
                 switch(ch) {
                         case KEY_UP:
-                                LOG( 7, 1, "KEY_UP   ");
+                                LOG( 7, 1, "Key: KEY_UP   ");
                                 p_obj->rotation = (p_obj->rotation + 1) % 4;
                                 break;
 
                         case KEY_DOWN:
-                                LOG( 7, 1, "KEY_DOWN ");
+                                LOG( 7, 1, "Key: KEY_DOWN ");
                                 p_obj->rotation = (p_obj->rotation - 1) % 4;
                                 break;
 
                         case KEY_LEFT:
-                                LOG( 7, 1, "KEY_LEFT ");
+                                LOG( 7, 1, "Key: KEY_LEFT ");
                                 p_obj->pos_x = ((p_obj->pos_x - 1) > 0) ? p_obj->pos_x - 1 : 0;
                                 break;
 
                         case KEY_RIGHT:
-                                LOG( 7, 1, "KEY_RIGHT");
+                                LOG( 7, 1, "Key: KEY_RIGHT");
                                 p_obj->pos_x = ((p_obj->pos_x + 1) < p_board->width) ? p_obj->pos_x + 1 : p_board->width;
                                 break;
                 }
