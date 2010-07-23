@@ -3,14 +3,13 @@
 
 #include "object/object.h"
 
-#define OBJECT_LINE_START       1
 
 #define DRAW_FILL               1
 #define DRAW_CLEAR              0
 #define BOARD_BORDER            1
 
-#define BORDER_VAL              2
-#define PLOTTED_VAL             3
+#define PLOTTED_VAL             1
+#define UNPLOTTED_VAL           0
 
 
 struct board_st {

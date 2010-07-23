@@ -40,34 +40,33 @@ void board_plotobject(struct board_st* p_board, struct object_st* p_obj)
 /* NEED SIMPLIFIED COLLISION */
 int board_collisiondetect(unsigned int coll_mode, struct board_st* p_board, struct object_st* p_obj) 
 {
-        int row_ctr, col_ctr, board_x, board_y; 
-        unsigned int board_idx, obj_idx;
-        int ret_val;
+        int i, j;
+        int obj_idx;
+        int abs_x, abs_y, abs_idx; 
 
-        ret_val = 0;
         switch(coll_mode)
         {
                 case BOTTOM_COLLISION:
-                        for (row_ctr = p_obj->height - 1; row_ctr >= 0; row_ctr--) {
-                                for(col_ctr = 0; col_ctr < p_obj->width; col_ctr++) {
-                                       obj_idx = (row_ctr * p_obj->width) + col_ctr;
+                        {
+                                /* Check window border */
+                                if ((p_obj->pos_y + p_obj->height) >= (p_board->height)) {
+                                        return 1;
+                                }
+                        
+                                /* Check plotted collision */
+                                for (i = p_obj->height - 1; i >= 0 ; i--) {
+                                        for (j = 0; j < p_obj->width; j++) {
+                                                obj_idx =  (i * p_obj->width) + j;  
 
-                                       if (1 == p_obj->p_plot[obj_idx]) {
-                                               board_x = p_obj->pos_x + col_ctr;
-                                               board_y = p_obj->pos_y + row_ctr + 1;
-
-                                               board_idx = (board_y * p_board->width) + board_x;
-                                               
-                                               switch (p_board->p_plot[board_idx]) 
-                                               {
-                                                        case 2:
-                                                        case 3:
-                                                                ret_val = 1;
-                                                                break;
-                                               }
-                                       }
-
-                                       if (1 == ret_val) break;
+                                                if (PLOTTED_VAL == p_obj->p_plot[obj_idx]) {
+                                                        abs_x = p_obj->pos_x + j;
+                                                        abs_y = p_obj->pos_y + i;   
+                                                        
+                                                        abs_idx = ((abs_y + 1) * p_board->width) + abs_x;
+                                                        if (PLOTTED_VAL == p_board->p_plot[abs_idx])
+                                                                return 1;
+                                                }
+                                        }
                                 }
                         }
                         break;
@@ -76,5 +75,5 @@ int board_collisiondetect(unsigned int coll_mode, struct board_st* p_board, stru
                         break;
         }
          
-        return ret_val;
+        return 0;
 }
