@@ -8,6 +8,8 @@
 
 #define OBJECT_T	0
 
+#define RIGHT_COLLISION         3
+#define LEFT_COLLISION          2
 #define TOP_COLLISION           1
 #define BOTTOM_COLLISION        0
 

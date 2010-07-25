@@ -13,6 +13,10 @@
         mvwprintw(p_wininfo, y, x, s); \
         wrefresh(p_wininfo); 
 
+WINDOW *p_winboard;
+WINDOW *p_wininfo;
+
+
 void sleep(unsigned int mseconds)
 {
         clock_t goal = mseconds + clock();
@@ -121,11 +125,42 @@ void create_wininfo(WINDOW **p_win, struct board_st* p_board)
         wrefresh(*p_win);
 }
 
+void screen_keyhandler(int key, struct board_st* p_board, struct object_st* p_obj)
+{ 
+       
+        switch(key) {
+                case KEY_UP:
+                        LOG( 9, 1, "Key: KEY_UP   ");
+                        napms(100);
+                        screen_drawobject(p_winboard, p_obj, DRAW_CLEAR);
+                        p_obj->rotation = (p_obj->rotation + 1) % 4;
+                        break;
+
+                case KEY_DOWN:
+                        LOG( 9, 1, "Key: KEY_DOWN ");
+                        napms(100);
+                        screen_drawobject(p_winboard, p_obj, DRAW_CLEAR);
+                        p_obj->rotation = (p_obj->rotation - 1) % 4;
+                        break;
+
+                case KEY_LEFT:
+                        LOG( 9, 1, "Key: KEY_LEFT ");
+                        napms(100);
+                        screen_drawobject(p_winboard, p_obj, DRAW_CLEAR);
+                        p_obj->pos_x--;
+                        break;
+
+                case KEY_RIGHT:
+                        LOG( 9, 1, "Key: KEY_RIGHT");
+                        napms(100);
+                        screen_drawobject(p_winboard, p_obj, DRAW_CLEAR);
+                        p_obj->pos_x++;
+                        break;
+        }
+}
+
 void screen_process(struct board_st* p_board, struct object_st* p_obj)
 {
-        WINDOW *p_winboard;
-        WINDOW *p_wininfo;
-
         /* Init and create object */
         object_init(p_obj, OBJECT_T, DEGREE_0);
 
@@ -147,34 +182,26 @@ void screen_process(struct board_st* p_board, struct object_st* p_obj)
                 ch = wgetch(p_winboard);
                 if ('Q' == ch || 'q' == ch)
                         break;
-                switch(ch) {
-                        case KEY_UP:
-                                LOG( 9, 1, "Key: KEY_UP   ");
-                                p_obj->rotation = (p_obj->rotation + 1) % 4;
-                                break;
 
-                        case KEY_DOWN:
-                                LOG( 9, 1, "Key: KEY_DOWN ");
-                                p_obj->rotation = (p_obj->rotation - 1) % 4;
-                                break;
+                screen_keyhandler(ch, p_board, p_obj);
 
-                        case KEY_LEFT:
-                                LOG( 9, 1, "Key: KEY_LEFT ");
-                                p_obj->pos_x = ((p_obj->pos_x - 1) > 0) ? p_obj->pos_x - 1 : 0;
-                                break;
-
-                        case KEY_RIGHT:
-                                LOG( 9, 1, "Key: KEY_RIGHT");
-                                p_obj->pos_x = ((p_obj->pos_x + 1) < p_board->width) ? p_obj->pos_x + 1 : p_board->width;
-                                break;
-                }
-
-                if (board_collisiondetect(BOTTOM_COLLISION, p_board, p_obj)) {
+                if (board_collisiondetect(TOP_COLLISION, p_board, p_obj)) {
+                        LOG(10, 1, "<<< GAME OVER >>>");
+                        break;
+                } else if (board_collisiondetect(BOTTOM_COLLISION, p_board, p_obj)) {
                         board_plotobject(p_board, p_obj);
                         p_obj->pos_y = 0;
                         continue;
+                } else if (board_collisiondetect(RIGHT_COLLISION, p_board, p_obj)) {
+                        LOG(10, 1, "<<< RGHT COLL >>>");
+                        p_obj->pos_x--;
+                        continue;
+                } else if (board_collisiondetect(LEFT_COLLISION, p_board, p_obj)) {
+                        LOG(10, 1, "<<< LEFT COLL >>>");
+                        p_obj->pos_x++;
+                        continue;
                 } else {
-                        napms(200);
+                        napms(100);
                         screen_drawobject(p_winboard, p_obj, DRAW_CLEAR);
                         p_obj->pos_y++;
                 }
