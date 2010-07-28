@@ -145,16 +145,24 @@ void screen_keyhandler(int key, struct board_st* p_board, struct object_st* p_ob
 
                 case KEY_LEFT:
                         LOG( 9, 1, "Key: KEY_LEFT ");
-                        napms(100);
-                        screen_drawobject(p_winboard, p_obj, DRAW_CLEAR);
-                        p_obj->pos_x--;
+                        if (!board_collisiondetect(LEFT_COLLISION, p_board, p_obj)) {
+                                LOG(10, 1, "<<< LEFT COLL >>>"); 
+                                napms(100);
+                                screen_drawobject(p_winboard, p_obj, DRAW_CLEAR);
+                                p_obj->pos_x--;
+                                screen_drawobject(p_winboard, p_obj, DRAW_FILL);
+                        }
                         break;
 
                 case KEY_RIGHT:
                         LOG( 9, 1, "Key: KEY_RIGHT");
-                        napms(100);
-                        screen_drawobject(p_winboard, p_obj, DRAW_CLEAR);
-                        p_obj->pos_x++;
+                        if (!board_collisiondetect(RIGHT_COLLISION, p_board, p_obj)) {
+                                LOG(10, 1, "<<< RGHT COLL >>>");
+                                napms(100);
+                                screen_drawobject(p_winboard, p_obj, DRAW_CLEAR);
+                                p_obj->pos_x++;
+                                screen_drawobject(p_winboard, p_obj, DRAW_FILL);
+                        } 
                         break;
         }
 }
@@ -192,16 +200,8 @@ void screen_process(struct board_st* p_board, struct object_st* p_obj)
                         board_plotobject(p_board, p_obj);
                         p_obj->pos_y = 0;
                         continue;
-                } else if (board_collisiondetect(RIGHT_COLLISION, p_board, p_obj)) {
-                        LOG(10, 1, "<<< RGHT COLL >>>");
-                        p_obj->pos_x--;
-                        continue;
-                } else if (board_collisiondetect(LEFT_COLLISION, p_board, p_obj)) {
-                        LOG(10, 1, "<<< LEFT COLL >>>");
-                        p_obj->pos_x++;
-                        continue;
                 } else {
-                        napms(100);
+                        napms(150);
                         screen_drawobject(p_winboard, p_obj, DRAW_CLEAR);
                         p_obj->pos_y++;
                 }

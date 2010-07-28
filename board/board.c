@@ -54,6 +54,7 @@ int board_collisiondetect(unsigned int coll_mode, struct board_st* p_board, stru
                         }
                 
                         /* Check plotted collision */
+                        /* Detection starts from left to right in last row */
                         for (i = p_obj->height - 1; i >= 0 ; i--) {
                                 for (j = 0; j < p_obj->width; j++) {
                                         obj_idx =  (i * p_obj->width) + j;  
@@ -87,7 +88,21 @@ int board_collisiondetect(unsigned int coll_mode, struct board_st* p_board, stru
                 {
                         if (0 >= p_obj->pos_x)
                                 return 1;
-                        
+
+                        for (j = 0; j < p_obj->width; j++) {
+                                for (i = 0; i < p_obj->height; i++) {
+                                        obj_idx =  (i * p_obj->width) + j;
+
+                                        if (PLOTTED_VAL == p_obj->p_plot[obj_idx]) {
+                                                abs_x = p_obj->pos_x + j;
+                                                abs_y = p_obj->pos_y + i;
+
+                                                abs_idx = ((abs_y) * p_board->width) + (abs_x - 1);
+                                                if (PLOTTED_VAL == p_board->p_plot[abs_idx])
+                                                        return 1;
+                                        }
+                                }
+                        }
                         return 0;
                 }
                 break;
@@ -96,6 +111,21 @@ int board_collisiondetect(unsigned int coll_mode, struct board_st* p_board, stru
                 {
                         if (p_board->width <= (p_obj->pos_x + p_obj->width))
                                 return 1;
+
+                        for (j = p_obj->width - 1; j >= 0; j--) {
+                                for (i = 0; i < p_obj->height; i++) {
+                                        obj_idx =  (i * p_obj->width) + j;
+
+                                        if (PLOTTED_VAL == p_obj->p_plot[obj_idx]) {
+                                                abs_x = p_obj->pos_x + j;
+                                                abs_y = p_obj->pos_y + i;
+
+                                                abs_idx = ((abs_y) * p_board->width) + (abs_x + 1);
+                                                if (PLOTTED_VAL == p_board->p_plot[abs_idx])
+                                                        return 1;
+                                        }
+                                }
+                        }
 
                         return 0;
                 };
