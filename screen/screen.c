@@ -134,6 +134,12 @@ void screen_keyhandler(int key, struct board_st* p_board, struct object_st* p_ob
                         napms(100);
                         screen_drawobject(p_winboard, p_obj, DRAW_CLEAR);
                         p_obj->rotation = (p_obj->rotation + 1) % 4;
+                        if ( (board_collisiondetect(LEFT_COLLISION, p_board, p_obj)) 
+                                || (board_collisiondetect(LEFT_COLLISION, p_board, p_obj))
+                                || (board_collisiondetect(LEFT_COLLISION, p_board, p_obj))
+                                || (board_collisiondetect(LEFT_COLLISION, p_board, p_obj)) ) 
+                                p_obj->rotation = (p_obj->rotation - 1) % 4;
+                        screen_drawobject(p_winboard, p_obj, DRAW_FILL);
                         break;
 
                 case KEY_DOWN:

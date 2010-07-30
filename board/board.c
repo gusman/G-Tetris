@@ -133,3 +133,14 @@ int board_collisiondetect(unsigned int coll_mode, struct board_st* p_board, stru
          
         return 0;
 }
+
+void board_checkscore(struct board_st* p_board, struct object_st* p_obj)
+{
+        int i, j;
+        int abs_y;
+        int line_idx;
+
+        abs_y = p_obj->pos_y;
+
+
+}
