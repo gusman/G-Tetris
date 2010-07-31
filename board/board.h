@@ -23,6 +23,6 @@ void get_board(struct board_st** p_board);
 void board_init(struct board_st* p_board, unsigned int width, unsigned int height);
 void board_plotobject(struct board_st* p_board, struct object_st* p_obj);
 int board_collisiondetect(unsigned int coll_mode, struct board_st* p_board, struct object_st* p_obj); 
-void board_checkscore(struct board_st* p_board, struct object_st* p_obj);
+int board_checkscore(struct board_st* p_board, struct object_st* p_obj);
 #endif /*__BOARD_H__*/
 

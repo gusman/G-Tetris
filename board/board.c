@@ -134,13 +134,31 @@ int board_collisiondetect(unsigned int coll_mode, struct board_st* p_board, stru
         return 0;
 }
 
-void board_checkscore(struct board_st* p_board, struct object_st* p_obj)
+static void board_shift(struct board_st* p_board)
 {
-        int i, j;
-        int abs_y;
-        int line_idx;
 
-        abs_y = p_obj->pos_y;
+}
 
+int board_checkscore(struct board_st* p_board, struct object_st* p_obj)
+{
+        int i, abs_idx;
+        int score;
+        int min_y, y;
 
+        score = 0;
+        y = p_board->height - 1;
+        min_y = p_obj->pos_y;
+        while(y >= min_y) {
+                for (i = 0; i < p_board->width; i++) {
+                        abs_idx = i + (y * p_board->width);
+                        if (UNPLOTTED_VAL == p_board->p_plot[abs_idx]) 
+                                break;
+                }
+
+                if (i == p_board->width)
+                        score += 1;
+                y--;
+        }
+
+        return score;
 }

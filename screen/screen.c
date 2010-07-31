@@ -9,8 +9,8 @@
 #define CLRPAIR_DEFAULT         1
 #define CLRPAIR_BLOCK_T         2
 
-#define LOG(y, x, s)  \
-        mvwprintw(p_wininfo, y, x, s); \
+#define LOG(y, x, arg...)  \
+        mvwprintw(p_wininfo, y, x, ##arg); \
         wrefresh(p_wininfo); 
 
 WINDOW *p_winboard;
@@ -175,20 +175,27 @@ void screen_keyhandler(int key, struct board_st* p_board, struct object_st* p_ob
 
 void screen_process(struct board_st* p_board, struct object_st* p_obj)
 {
-        /* Init and create object */
-        object_init(p_obj, OBJECT_T, DEGREE_0);
-
         /* Init screen */
         init_screen();
         create_winboard(&p_winboard, p_board);
         create_wininfo(&p_wininfo, p_board); 
-      
+
+        /* Init and create object */
+        object_init(p_obj, OBJECT_T, DEGREE_0);
+
         p_obj->pos_y = 0;
+        p_obj->pos_x = 31;
         while(1) {
                 int ch;
 
-                if (0 == p_obj->pos_y)
-                        p_obj->pos_x = p_board->width / 2;
+                if (0 == p_obj->pos_y) {
+                        if ((p_obj->pos_x + 3)>= 29) 
+                                p_obj->pos_x = 0;
+                        else
+                                p_obj->pos_x += 3;
+
+                        p_obj->rotation = 0;
+                }
 
                 screen_drawobject(p_winboard, p_obj, DRAW_FILL);
                 screen_infodraw(p_wininfo, p_board, p_obj);
@@ -203,9 +210,12 @@ void screen_process(struct board_st* p_board, struct object_st* p_obj)
                         LOG(10, 1, "<<< GAME OVER >>>");
                         break;
                 } else if (board_collisiondetect(BOTTOM_COLLISION, p_board, p_obj)) {
+                        int score;
+
                         board_plotobject(p_board, p_obj);
+                        score = board_checkscore(p_board, p_obj);
+                        LOG(11, 1, "SCORE : %d\n", score);
                         p_obj->pos_y = 0;
-                        continue;
                 } else {
                         napms(150);
                         screen_drawobject(p_winboard, p_obj, DRAW_CLEAR);
