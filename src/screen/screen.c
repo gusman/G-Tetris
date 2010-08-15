@@ -59,9 +59,23 @@ void screen_drawbottom(WINDOW *p_window, struct board_st* p_board)
 {
         int i, j;
         int idx;
-        int abs_x, abs_y;
-        int mode;
 
+
+        for (i = 0; i < p_board->height; i++) {
+                for (j = 0; j < p_board->width; j++) {
+                        idx = (i * p_board->width) + j;
+
+                        wmove(p_window, i, j);
+                        if (1 == p_board->p_plot[idx]) {
+                               wattron(p_window, COLOR_PAIR(CLRPAIR_BLOCK_T));
+                               wprintw(p_window, "1");
+                               wattroff(p_window, COLOR_PAIR(CLRPAIR_BLOCK_T));
+                        } else
+                                wprintw(p_window, "0");
+                        wrefresh(p_window);
+                }
+        }
+#if 0
         mode = DRAW_FILL;
         for (i = p_board->height - 1; i >= 0; i--) {
                 for (j = 0; j < p_board->width; j++) {
@@ -83,7 +97,7 @@ void screen_drawbottom(WINDOW *p_window, struct board_st* p_board)
                         wrefresh(p_window);
                 }
         }
-
+#endif
 }
 
 void screen_infodraw(WINDOW *p_window, struct board_st* p_board, struct object_st* p_obj)

@@ -148,13 +148,13 @@ extern WINDOW *p_wininfo;
         mvwprintw(p_wininfo, y, x, ##arg); \
         wrefresh(p_wininfo); 
 
-void board_shiftdown(struct board_st* p_board, unsigned int shift_val)
+void board_shiftdown(struct board_st* p_board, unsigned int idx, unsigned int num)
 {
         int max_y;
         int min_y;
 
-        max_y = p_board->height - 1;
-        min_y = max_y - shift_val;
+        max_y = idx;
+        min_y = max_y - num;
         for (; max_y >= min_y - 1; max_y--){
                 int i;
                 int source_idx;
@@ -188,37 +188,30 @@ int board_scanrow(struct board_st* p_board, unsigned int row_idx)
 
 int board_checkscore(struct board_st* p_board, struct object_st* p_obj)
 {
-        int i, shift_val;
-        int y;
+        int n_del;
+        int h_idx, l_idx;
 
-        if (board_scanrow(p_board, p_board->height-1))
-                board_shiftdown(p_board, 1);
-        /*
-        y = p_board->height - 1;
+        h_idx = p_board->height - 1;
         while(1) {
 
-                shift_val = 0;
-                while (board_scanrow(p_board, y)) {
-                        y--;
-                        shift_val++;
+                n_del = 0;
+                l_idx = h_idx;
+                while (board_scanrow(p_board, l_idx)) {
+                        l_idx--;
+                        n_del++;
                         p_board->score++;
 
-                        LOG(13, 1, "shift-val: %d", shift_val);
-
-                        if (y < p_board->top_row);
+                        if (l_idx < p_board->top_row);
                                 break;
                 }
 
-                LOG(12,1, "shift val: %d", shift_val);
+                if (n_del > 0)
+                        board_shiftdown(p_board, h_idx, n_del);
 
-                if (shift_val != 0) board_shiftdown(p_board, 1);
-
-                p_board->top_row -= shift_val;
-                y += shift_val - 1;
-
-                if (y < p_board->top_row)
+                h_idx--;
+                if (h_idx < p_board->top_row)
                         break;
         }
-*/
+
         return p_board->score;
 }
