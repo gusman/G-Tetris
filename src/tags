@@ -1,0 +1,107 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.7	//
+BOARD_BORDER	board/board.h	9;"	d
+BOTTOM_COLLISION	object/object.h	14;"	d
+CC	makefile	/^CC = gcc$/;"	m
+CFLAGS	makefile	/^CFLAGS = -Wall -pedantic -I.$/;"	m
+CLRPAIR_BLOCK_T	screen/screen.c	10;"	d	file:
+CLRPAIR_DEFAULT	screen/screen.c	9;"	d	file:
+CURSES_FLAGS	makefile	/^	CURSES_FLAGS = -lncurses$/;"	m
+CURSES_FLAGS	makefile	/^	CURSES_FLAGS = -lpdcurses$/;"	m
+CURSES_FLAGS	makefile	/^CURSES_FLAGS :=$/;"	m
+DEGREE_0	object/object.h	4;"	d
+DEGREE_180	object/object.h	6;"	d
+DEGREE_270	object/object.h	7;"	d
+DEGREE_90	object/object.h	5;"	d
+DRAW_CLEAR	board/board.h	8;"	d
+DRAW_FILL	board/board.h	7;"	d
+LEFT_COLLISION	object/object.h	12;"	d
+LN	makefile	/^LN = gcc$/;"	m
+LOG	screen/screen.c	12;"	d	file:
+OBJECT_GETX	object/object.h	30;"	d
+OBJECT_GETY	object/object.h	31;"	d
+OBJECT_ROTATE	object/object.h	28;"	d
+OBJECT_SETX	object/object.h	26;"	d
+OBJECT_SETY	object/object.h	27;"	d
+OBJECT_T	object/object.h	9;"	d
+PLOTTED_VAL	board/board.h	11;"	d
+RIGHT_COLLISION	object/object.h	11;"	d
+RM	makefile	/^	RM = rm -rf$/;"	m
+TARGET	makefile	/^TARGET = $(t)$/;"	m
+TARGET_FLAGS	makefile	/^	TARGET_FLAGS = -D D_LINUX$/;"	m
+TARGET_FLAGS	makefile	/^TARGET_FLAGS := $/;"	m
+TOBJ_H	object/object_t.c	9;"	d	file:
+TOBJ_W	object/object_t.c	8;"	d	file:
+TOP_COLLISION	object/object.h	13;"	d
+TROT_0	object/object_t.h	9;"	d
+TROT_180	object/object_t.h	20;"	d
+TROT_270	object/object_t.h	25;"	d
+TROT_90	object/object_t.h	14;"	d
+T_HEIGHT	object/object_t.h	7;"	d
+T_WIDTH	object/object_t.h	6;"	d
+UNPLOTTED_VAL	board/board.h	12;"	d
+__BOARD_H__	board/board.h	2;"	d
+__OBJECT_H__	object/object.h	2;"	d
+__OBJECT_T_H__	object/object_t.h	2;"	d
+__SCREEN_H__	screen/screen.h	2;"	d
+board_checkscore	board/board.c	/^int board_checkscore(struct board_st* p_board, struct object_st* p_obj)$/;"	f
+board_collisiondetect	board/board.c	/^int board_collisiondetect(unsigned int coll_mode, struct board_st* p_board, struct object_st* p_obj) $/;"	f
+board_init	board/board.c	/^void board_init(struct board_st* p_board, unsigned int width, unsigned int height)$/;"	f
+board_plotobject	board/board.c	/^void board_plotobject(struct board_st* p_board, struct object_st* p_obj)$/;"	f
+board_st	board/board.h	/^struct board_st {$/;"	s
+create_colorpair	screen/screen.c	/^void create_colorpair()$/;"	f
+create_winboard	screen/screen.c	/^void create_winboard(WINDOW **p_win, struct board_st* p_board)$/;"	f
+create_wininfo	screen/screen.c	/^void create_wininfo(WINDOW **p_win, struct board_st* p_board)$/;"	f
+get_board	board/board.c	/^void get_board(struct board_st** p_board)$/;"	f
+get_object	object/object.c	/^void get_object(struct object_st** p_obj)$/;"	f
+height	board/board.h	/^	unsigned int height;$/;"	m	struct:board_st
+height	object/object.h	/^	unsigned int height;$/;"	m	struct:object_st
+init_screen	screen/screen.c	/^void init_screen(void)$/;"	f
+local_dir	board/board.mk	/^local_dir = board$/;"	m
+local_dir	main/main.mk	/^local_dir = main$/;"	m
+local_dir	object/object.mk	/^local_dir = object$/;"	m
+local_dir	screen/screen.mk	/^local_dir = screen$/;"	m
+local_obj	board/board.mk	/^local_obj = $(subst .c,.o,$(local_src))$/;"	m
+local_obj	main/main.mk	/^local_obj = $(subst .c,.o,$(local_src))$/;"	m
+local_obj	object/object.mk	/^local_obj = $(subst .c,.o,$(local_src))$/;"	m
+local_obj	screen/screen.mk	/^local_obj = $(subst .c,.o,$(local_src))$/;"	m
+local_src	board/board.mk	/^local_src = $(local_dir)\/board.c$/;"	m
+local_src	main/main.mk	/^local_src = $(local_dir)\/main.c$/;"	m
+local_src	object/object.mk	/^local_src = $(local_dir)\/object.c $(local_dir)\/object_t.c$/;"	m
+local_src	screen/screen.mk	/^local_src = $(local_dir)\/screen.c$/;"	m
+main	main/main.c	/^int main()$/;"	f
+modules	makefile	/^modules := screen\/screen.mk main\/main.mk board\/board.mk object\/object.mk$/;"	m
+object_init	object/object.c	/^void object_init(struct object_st* p_obj, unsigned int obj_type, unsigned int rot)$/;"	f
+object_st	object/object.h	/^struct object_st {$/;"	s
+objects	makefile	/^objects :=$/;"	m
+p_plot	board/board.h	/^        unsigned int *p_plot;$/;"	m	struct:board_st
+p_plot	object/object.h	/^	unsigned int *p_plot;$/;"	m	struct:object_st
+p_winboard	screen/screen.c	/^WINDOW *p_winboard;$/;"	v
+p_wininfo	screen/screen.c	/^WINDOW *p_wininfo;$/;"	v
+pf_genplot	object/object.h	/^        void (*pf_genplot)      (struct object_st* p_obj);$/;"	m	struct:object_st
+pos_x	object/object.h	/^	int pos_x;$/;"	m	struct:object_st
+pos_y	object/object.h	/^        int pos_y;$/;"	m	struct:object_st
+rotation	object/object.h	/^	unsigned int rotation;$/;"	m	struct:object_st
+screen_drawobject	screen/screen.c	/^void screen_drawobject(WINDOW *p_window, struct object_st* p_obj, unsigned int mode)$/;"	f
+screen_drawplot	screen/screen.c	/^void screen_drawplot(WINDOW *p_window, struct board_st* p_board)$/;"	f
+screen_infodraw	screen/screen.c	/^void screen_infodraw(WINDOW *p_window, struct board_st* p_board, struct object_st* p_obj)$/;"	f
+screen_keyhandler	screen/screen.c	/^void screen_keyhandler(int key, struct board_st* p_board, struct object_st* p_obj)$/;"	f
+screen_process	screen/screen.c	/^void screen_process(struct board_st* p_board, struct object_st* p_obj)$/;"	f
+sleep	screen/screen.c	/^void sleep(unsigned int mseconds)$/;"	f
+sources	makefile	/^sources :=$/;"	m
+st_board	board/board.c	/^static struct board_st st_board;$/;"	v	typeref:struct:board_st	file:
+st_obj	object/object.c	/^static struct object_st st_obj;$/;"	v	typeref:struct:object_st	file:
+tobj_genplot	object/object_t.c	/^void tobj_genplot(struct object_st *p_obj)$/;"	f
+tobj_genplot0	object/object_t.c	/^void tobj_genplot0(struct object_st *p_obj)$/;"	f
+tobj_genplot180	object/object_t.c	/^void tobj_genplot180(struct object_st *p_obj)$/;"	f
+tobj_genplot270	object/object_t.c	/^void tobj_genplot270(struct object_st *p_obj)$/;"	f
+tobj_genplot90	object/object_t.c	/^void tobj_genplot90(struct object_st *p_obj)$/;"	f
+tobj_init	object/object_t.c	/^void tobj_init(struct object_st *p_obj, unsigned int rot)$/;"	f
+top_row	board/board.h	/^        unsigned int top_row;$/;"	m	struct:board_st
+type	object/object.h	/^	unsigned int type;$/;"	m	struct:object_st
+width	board/board.h	/^	unsigned int width;$/;"	m	struct:board_st
+width	object/object.h	/^	unsigned int width;$/;"	m	struct:object_st
