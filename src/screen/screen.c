@@ -9,7 +9,7 @@
 #define CLRPAIR_DEFAULT         1
 #define CLRPAIR_BLOCK_T         2
 
-#define DELAY_VAL               50
+#define DELAY_VAL               100
 
 #define LOG(y, x, arg...)  \
         mvwprintw(p_wininfo, y, x, ##arg); \
@@ -75,29 +75,6 @@ void screen_drawbottom(WINDOW *p_window, struct board_st* p_board)
                         wrefresh(p_window);
                 }
         }
-#if 0
-        mode = DRAW_FILL;
-        for (i = p_board->height - 1; i >= 0; i--) {
-                for (j = 0; j < p_board->width; j++) {
-                        idx = (i * p_board->width) + j;
-                        abs_x = j;
-                        abs_y = i;
-
-                        wmove(p_window, i, j);
-                        if (DRAW_FILL == mode) {
-                                if (p_board->p_plot[idx] == 1) {
-                                       wattron(p_window, COLOR_PAIR(CLRPAIR_BLOCK_T));
-                                       wprintw(p_window, " ");
-                                       wattroff(p_window, COLOR_PAIR(CLRPAIR_BLOCK_T));
-                                }
-                        }
-                        else 
-                                wprintw(p_window, " ");
-                        
-                        wrefresh(p_window);
-                }
-        }
-#endif
 }
 
 void screen_infodraw(WINDOW *p_window, struct board_st* p_board, struct object_st* p_obj)
@@ -218,7 +195,7 @@ void screen_process(struct board_st* p_board, struct object_st* p_obj)
         create_mirror(&p_mirror, p_board);
 
         /* Init and create object */
-        object_init(p_obj, OBJECT_T, DEGREE_0);
+        object_init(p_obj, OBJECT_Z, DEGREE_0);
 
         p_obj->pos_y = 0;
         p_obj->pos_x = 31;
@@ -226,10 +203,10 @@ void screen_process(struct board_st* p_board, struct object_st* p_obj)
                 int ch;
 
                 if (0 == p_obj->pos_y) {
-                        if ((p_obj->pos_x + 3)>= 29) 
+                        if ((p_obj->pos_x + 1)>= 30) 
                                 p_obj->pos_x = 0;
                         else
-                                p_obj->pos_x += 3;
+                                p_obj->pos_x += 1;
 
                         p_obj->rotation = 0;
                 }

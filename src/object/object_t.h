@@ -3,12 +3,9 @@
 
 #include "object.h"
 
-#define T_WIDTH		3	
-#define T_HEIGHT	3
-
 #define TROT_0 { \
-	{ 0, 1, 0, },\
-	{ 1, 1, 1  } \
+	{ 1, 1, 1, },\
+	{ 0, 1, 0, } \
 }	
 			
 #define	TROT_90 {\
@@ -18,8 +15,8 @@
 }
 
 #define TROT_180 {\
-	{ 1, 1, 1, },\
-	{ 0, 1, 0, } \
+        { 0, 1, 0, },\
+	{ 1, 1, 1  } \
 }
 
 #define TROT_270 {\

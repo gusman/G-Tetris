@@ -7,6 +7,12 @@
 #define DEGREE_270	3
 
 #define OBJECT_T	0
+#define OBJECT_I        1
+#define OBJECT_O        2
+#define OBJECT_J        3
+#define OBJECT_L        4
+#define OBJECT_S        5
+#define OBJECT_Z        6
 
 #define RIGHT_COLLISION         3
 #define LEFT_COLLISION          2

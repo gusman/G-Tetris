@@ -154,14 +154,14 @@ void board_shiftdown(struct board_st* p_board, unsigned int idx, unsigned int nu
         int min_y;
 
         max_y = idx;
-        min_y = max_y - num;
-        for (; max_y >= min_y - 1; max_y--){
+        min_y = p_board->top_row;
+        for (; max_y >= min_y - num; max_y--){
                 int i;
                 int source_idx;
                 int target_idx;
                 
                 for (i = 0; i < p_board->width; i++) {
-                        source_idx = ((max_y - 1) * p_board->width) + i;
+                        source_idx = ((max_y - num) * p_board->width) + i;
                         target_idx = (max_y * p_board->width) + i;
 
                         p_board->p_plot[target_idx] = p_board->p_plot[source_idx];
@@ -205,8 +205,10 @@ int board_checkscore(struct board_st* p_board, struct object_st* p_obj)
                                 break;
                 }
 
-                if (n_del > 0)
+                if (n_del > 0) {
                         board_shiftdown(p_board, h_idx, n_del);
+                        continue;
+                }
 
                 h_idx--;
                 if (h_idx < p_board->top_row)
